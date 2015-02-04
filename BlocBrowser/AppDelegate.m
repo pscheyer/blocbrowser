@@ -21,7 +21,7 @@
     //override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] init]];
-    
+    //Got this section straight from Steve
     [self.window makeKeyAndVisible];
     return YES;
 }
