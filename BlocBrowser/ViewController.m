@@ -8,20 +8,37 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <UIWebViewDelegate>
+
+@property (nonatomic, strong) UIWebView *webview;
 
 @end
 
 @implementation ViewController
 
+
+-(void)loadView {
+    UIView *mainView = [UIView new];
+    
+    self.webview = [[UIWebView alloc] init];
+    self.webview.delegate = self;
+    
+    [mainView addSubview:self.webview];
+    self.view = mainView;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    //make the webview fill the main view
+    self.webview.frame = self.view.frame;
+    
+    
 }
+
 
 @end
