@@ -17,6 +17,7 @@
 @property (nonatomic, strong) AwesomeFloatingToolbar *awesomeToolbar;
 @property (nonatomic, assign) NSUInteger frameCount;
 
+
 #define kWebBrowserBackString NSLocalizedString(@"Back", @"Back command")
 #define kWebBrowserForwardString NSLocalizedString(@"Forward", @"Forward command")
 #define kWebBrowserStopString NSLocalizedString(@"Stop", @"Stop command")
@@ -39,7 +40,7 @@
     self.textField.returnKeyType = UIReturnKeyDone;
     self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.textField.placeholder = NSLocalizedString(@"Website URL", @"Placeholder text for web browser URL Field");
+    self.textField.placeholder = NSLocalizedString(@"Website URL or Search Terms", @"Placeholder text for web browser URL Field");
     self.textField.backgroundColor = [UIColor colorWithWhite:220/255.0f alpha:1];
     self.textField.delegate = self;
     
@@ -128,6 +129,40 @@
     }
 }
 
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPanWithOffset:(CGPoint)offset {
+    CGPoint startingPoint = toolbar.frame.origin;
+    CGPoint newPoint = CGPointMake(startingPoint.x + offset.x, startingPoint.y + offset.y);
+    
+    CGRect potentialNewFrame = CGRectMake(newPoint.x, newPoint.y, CGRectGetWidth(toolbar.frame), CGRectGetHeight(toolbar.frame));
+    
+    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
+        toolbar.frame = potentialNewFrame;
+    }
+
+}
+
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPinchWithScale:(CGFloat)scale {
+    CGPoint startingPoint = toolbar.frame.origin;
+    CGFloat newToolbarHeight = CGRectGetHeight(toolbar.frame) * scale;
+    CGFloat newToolbarWidth = CGRectGetWidth(toolbar.frame) * scale;
+    
+    
+    CGRect potentialNewFrame = CGRectMake(startingPoint.x, startingPoint.y, newToolbarWidth, newToolbarHeight);
+
+//    toolbar.transform = CGAffineTransformScale(toolbar.transform, scale, scale);
+    
+    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
+        toolbar.frame = potentialNewFrame;
+    } else {
+        NSLog(@"doesn't fit!");
+    }
+        NSLog(@"Scale is : %f", scale);
+}
+
+
+//- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didLongPress{
+//
+//}
 
 #pragma mark - UIWebViewDelegate
 
